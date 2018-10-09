@@ -6,9 +6,8 @@ def get_character_movies_from_api(character)
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)
 
-  n = 1
   while response_hash["next"] != nil
-    response_string = RestClient.get("https://swapi.co/api/people/?page=#{n}")
+    response_string = RestClient.get(response_hash["next"])
     response_hash = JSON.parse(response_string)
 
     response_hash["results"].each { |features|
@@ -16,7 +15,6 @@ def get_character_movies_from_api(character)
         return films_arr = features["films"].sort
       end
     }
-  n+=1
   end
 end
 
